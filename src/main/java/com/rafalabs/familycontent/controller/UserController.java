@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rafalabs.familycontent.domain.User;
+import com.rafalabs.familycontent.domain.AppUser;
 import com.rafalabs.familycontent.service.UserService;
 
 @RestController
@@ -19,7 +19,7 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> list() {
+	public ResponseEntity<List<AppUser>> list() {
 		return ResponseEntity.ok(userService.list());
 	}
 }

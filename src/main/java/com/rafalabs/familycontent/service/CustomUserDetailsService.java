@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		AppUser retrievedAppUser = userService.findByUsername(appUser.getUsername());
 	    if(retrievedAppUser != null) {
 	    	throw new Exception(
-	  	          "There is an account with that email adress:" + appUser.getUsername());
+	  	          "User not available:" + appUser.getUsername());
 	    }
 	    
 	    appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));

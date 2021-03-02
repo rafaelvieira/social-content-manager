@@ -1,4 +1,4 @@
-package com.rafalabs.socialcm
+package integration.com.rafalabs.socialcm
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

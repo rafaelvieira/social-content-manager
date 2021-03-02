@@ -1,2 +1,2 @@
-# family-content
-A family content organizer
+# social-content-manager
+A social content manager

@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 
 @SpringBootTest
-@TestPropertySource(locations = ["file:/src/test/resources/application-test.properties"])
+@ActiveProfiles("test")
 class SocialContentManagementApplicationTests {
 
 	@Test

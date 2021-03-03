@@ -1,6 +1,7 @@
 package unit.com.rafalabs.socialcm.content.service
 
 import com.rafalabs.socialcm.content.domain.Content
+import com.rafalabs.socialcm.content.service.ContentService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test

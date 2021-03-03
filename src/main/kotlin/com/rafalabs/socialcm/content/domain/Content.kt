@@ -26,6 +26,6 @@ class Content {
         fun id(id: Long?) = apply { this.id = id }
         fun description(description: String) = apply { this.description = description }
         fun value(value: String) = apply { this.value = value }
-        fun build() = Content(id, title, description, value);
+        fun build() = Content(id, title, description, value)
     }
 }

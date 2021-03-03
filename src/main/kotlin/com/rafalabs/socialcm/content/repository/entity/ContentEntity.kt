@@ -5,13 +5,13 @@ import javax.persistence.Entity
 
 @Entity(name = "content")
 class ContentEntity {
-    var id: Long? = null;
-    var title: String = "";
-    var description: String = "";
-    var value: String = "";
+    var id:             Long? = null;
+    var title:          String = "";
+    var description:    String = "";
+    var value:          String = "";
 
     companion object {
-        fun fromDomain(domain: Content): ContentEntity {
+        fun from(domain: Content): ContentEntity {
 
             val entity = ContentEntity();
             entity.id           = domain.id;
@@ -22,7 +22,7 @@ class ContentEntity {
             return entity;
         }
 
-        fun toDomain(entity: ContentEntity): Content {
+        fun to(entity: ContentEntity): Content {
 
             return Content.Builder(entity.title)
                     .id(entity.id)

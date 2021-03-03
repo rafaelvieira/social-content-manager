@@ -12,7 +12,7 @@ class ContentService {
     private lateinit var contentRepository: ContentRepository;
 
     fun save(content: Content): Content {
-        val newContentEntity = contentRepository.save(ContentEntity.fromDomain(content));
-        return ContentEntity.toDomain(newContentEntity);
+        val newContentEntity = contentRepository.save(ContentEntity.from(content));
+        return ContentEntity.to(newContentEntity);
     }
 }

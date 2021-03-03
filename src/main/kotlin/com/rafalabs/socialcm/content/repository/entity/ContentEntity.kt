@@ -1,13 +1,22 @@
 package com.rafalabs.socialcm.content.repository.entity
 
 import com.rafalabs.socialcm.content.domain.Content
+import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "content")
 class ContentEntity {
+
+    @Column(name = "id")
     var id:             Long? = null;
+
+    @Column(name = "title")
     var title:          String = "";
+
+    @Column(name = "description")
     var description:    String = "";
+
+    @Column(name = "value")
     var value:          String = "";
 
     companion object {

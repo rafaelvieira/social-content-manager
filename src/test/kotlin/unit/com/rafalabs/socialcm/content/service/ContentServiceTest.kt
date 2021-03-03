@@ -15,7 +15,6 @@ import org.mockito.Mockito.any
 import org.mockito.Mockito.doReturn
 import org.mockito.junit.jupiter.MockitoExtension
 
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension::class)
 class ContentServiceTest {

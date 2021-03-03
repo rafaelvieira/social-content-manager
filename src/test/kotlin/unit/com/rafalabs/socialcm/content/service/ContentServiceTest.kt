@@ -1,4 +1,4 @@
-package com.rafalabs.socialcm.content.service
+package unit.com.rafalabs.socialcm.content.service
 
 import com.rafalabs.socialcm.content.domain.Content
 import org.junit.jupiter.api.Assertions.*
@@ -26,7 +26,7 @@ class ContentServiceTest {
 
         val persistedContent = contentService.save(expectedContent);
 
-        assertNotNull(persistedContent.id);
+        assertEquals(persistedContent.id, 1);
         assertEquals(persistedContent.title, expectedContent.title);
         assertEquals(persistedContent.description, expectedContent.description);
         assertEquals(persistedContent.value, expectedContent.value);
@@ -36,9 +36,9 @@ class ContentServiceTest {
     internal fun should_CreateContent_When_Optional_Properties_Not_Filled() {
         val content =
                 Content.Builder("Learning Kotlin by using TDD")
-                        .description(" ")
-                        .value(" ")
-                        .build();
+                    .description(" ")
+                    .value(" ")
+                    .build();
 
         assertEquals(content.description, "")
         assertEquals(content.value, "")

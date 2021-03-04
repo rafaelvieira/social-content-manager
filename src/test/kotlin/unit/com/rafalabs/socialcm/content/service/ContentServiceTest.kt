@@ -11,9 +11,9 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.any
-import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension::class)
@@ -35,10 +35,10 @@ class ContentServiceTest {
                 .build();
 
         val expectedContentEntity = ContentEntity();
-        expectedContentEntity.id            = 1;
-        expectedContentEntity.title         = expectedContent.title;
-        expectedContentEntity.description   = expectedContent.description;
-        expectedContentEntity.value         = expectedContent.value;
+        expectedContentEntity.id = 1;
+        expectedContentEntity.title = expectedContent.title;
+        expectedContentEntity.description = expectedContent.description;
+        expectedContentEntity.value = expectedContent.value;
 
         doReturn(expectedContentEntity)
             .`when`(contentRepository)
@@ -64,10 +64,10 @@ class ContentServiceTest {
                 .build();
 
         val expectedContentEntity = ContentEntity();
-        expectedContentEntity.id            = 1;
-        expectedContentEntity.title         = expectedContent.title;
-        expectedContentEntity.description   = expectedContent.description;
-        expectedContentEntity.value         = expectedContent.value;
+        expectedContentEntity.id = 1;
+        expectedContentEntity.title = expectedContent.title;
+        expectedContentEntity.description = expectedContent.description;
+        expectedContentEntity.value = expectedContent.value;
 
         doReturn(expectedContentEntity)
             .`when`(contentRepository)
@@ -77,18 +77,47 @@ class ContentServiceTest {
         val persistedContent = contentService.save(expectedContent);
 
         // Then
-        assertEquals(1,                     persistedContent.id);
+        assertEquals(1,                    persistedContent.id);
         assertEquals(expectedContent.title,         persistedContent.title);
         assertEquals(expectedContent.description,   persistedContent.description);
         assertEquals(expectedContent.value,         persistedContent.value);
     }
 
     @Test
-    internal fun should_ThrowException_When_TitleIsBlank() {
+    internal fun should_ThrowErrorCreatingContent_When_TitleIsBlank() {
 
-        assertThrows(IllegalArgumentException::class.java) {
+        assertThrows(IllegalArgumentException::class.java, {
             Content.Builder("   ")
                 .build();
-        };
+        }, "Title cannot be blank");
+    }
+
+    @Test
+    internal fun should_FindContent_When_IdExists() {
+        // Given
+        val expectedContentEntity = ContentEntity();
+        expectedContentEntity.id = 1;
+        expectedContentEntity.title = "Learning Kotlin by using TDD";
+
+        doReturn(Optional.of(expectedContentEntity))
+            .`when`(contentRepository)
+            .findById(1);
+
+        // When
+        val content = contentService.findById(1);
+
+        // Then
+        assertEquals(expectedContentEntity.title, content.title);
+    }
+
+    @Test
+    internal fun should_ThrowErrorFindingContent_When_IdDoesNotExists() {
+        // Given
+        val nonExistentId = 2L;
+
+        // When... Then
+        assertThrows(Exception::class.java, {
+            val content = contentService.findById(nonExistentId);
+        }, "Content ID 2 not found");
     }
 }

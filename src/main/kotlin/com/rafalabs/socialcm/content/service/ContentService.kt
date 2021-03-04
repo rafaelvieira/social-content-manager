@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service
 import com.rafalabs.socialcm.content.repository.ContentRepository
 import com.rafalabs.socialcm.content.repository.entity.ContentEntity
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
 
 @Service
 class ContentService {
@@ -17,9 +16,8 @@ class ContentService {
         return ContentEntity.to(newContentEntity);
     }
 
-    fun update(content: Content): Content {
-        if(content.id == null) throw IllegalArgumentException("Content ID cannot be null");
-        val newContentEntity = contentRepository.save(ContentEntity.from(content));
+    fun update(id: Long, content: Content): Content {
+        val newContentEntity = contentRepository.save(ContentEntity.from(id, content));
         return ContentEntity.to(newContentEntity);
     }
 

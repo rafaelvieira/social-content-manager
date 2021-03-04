@@ -4,8 +4,8 @@ import com.rafalabs.socialcm.content.domain.Content
 import com.rafalabs.socialcm.content.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import javax.websocket.server.PathParam
 
 @RestController("/api/content")
 class ContentController {
@@ -16,17 +16,21 @@ class ContentController {
         this.contentService = contentService;
     }
 
-    fun create(content: Content): ResponseEntity<Content> {
+    @PostMapping
+    fun create(@RequestBody content: Content): ResponseEntity<Content> {
         return ResponseEntity.ok(
             contentService.create(content));
     }
 
-    fun update(content: Content): ResponseEntity<Content> {
+    @PutMapping("/{id}")
+    fun update(@PathParam("id") id: Long,
+               @RequestBody content: Content): ResponseEntity<Content> {
         return ResponseEntity.ok(
-            contentService.update(content));
+            contentService.update(id, content));
     }
 
-    fun findById(id: Long): ResponseEntity<Content> {
+    @GetMapping("/{id}")
+    fun findById(@PathParam("id") id: Long): ResponseEntity<Content> {
         return ResponseEntity.ok(
             contentService.findById(id));
     }

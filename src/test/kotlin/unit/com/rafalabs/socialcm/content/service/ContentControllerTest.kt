@@ -122,40 +122,26 @@ class ContentControllerTest {
                 .build();
 
         val expectedContentEntity = ContentEntity();
-        expectedContentEntity.id = 1;
-        expectedContentEntity.title = expectedContent.title;
-        expectedContentEntity.description = expectedContent.description;
-        expectedContentEntity.value = expectedContent.value;
+        expectedContentEntity.id            = expectedContent.id;
+        expectedContentEntity.title         = expectedContent.title;
+        expectedContentEntity.description   = expectedContent.description;
+        expectedContentEntity.value         = expectedContent.value;
 
         doReturn(expectedContentEntity)
             .`when`(contentRepository)
             .save(any());
 
         // When
-        val response = contentController.update(expectedContent);
+        val response = contentController.update(expectedContentEntity.id!!, expectedContent);
         val persistedContent =
             if(response.body == null) throw AssertionError("Response body cannot be null")
             else response.body!!;
 
         // Then
-        assertEquals(1,                     persistedContent.id);
+        assertEquals(expectedContent.id,            persistedContent.id);
         assertEquals(expectedContent.title,         persistedContent.title);
         assertEquals(expectedContent.description,   persistedContent.description);
         assertEquals(expectedContent.value,         persistedContent.value);
-    }
-
-    @Test
-    internal fun should_ThrowErrorUpdatingContent_When_IdIsNull() {
-        // Given
-        val content =
-            Content.Builder("Anything")
-                .build();
-
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            // When
-            contentController.update(content);
-        };
-        assertEquals("Content ID cannot be null", exception.message);
     }
 
     @Test

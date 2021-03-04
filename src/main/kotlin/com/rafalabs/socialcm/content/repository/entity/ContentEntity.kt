@@ -30,10 +30,10 @@ class ContentEntity {
             return entity;
         }
 
-        fun from(domain: Content): ContentEntity {
+        fun from(id: Long, domain: Content): ContentEntity {
 
             val entity = fromWithoutId(domain);
-            entity.id           = domain.id;
+            entity.id  = id;
 
             return entity;
         }

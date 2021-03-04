@@ -36,6 +36,7 @@ class ContentController {
 
     @GetMapping("/{id}")
     fun findById(@PathParam("id") id: Long) {
+        throw Exception("Teste");
         return
             ResponseEntity.ok(
                 ContentDTO.from(

@@ -1,17 +1,14 @@
 package com.rafalabs.socialcm.content.controller
 
 import com.rafalabs.socialcm.content.controller.dto.ContentDTO
-import com.rafalabs.socialcm.content.domain.Content
 import com.rafalabs.socialcm.content.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.util.UriBuilder
-import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
-import javax.websocket.server.PathParam
 
-@RestController(ContentController.BASE_URL)
+@RestController
+@RequestMapping(ContentController.BASE_URL)
 class ContentController {
 
     @Autowired
@@ -26,7 +23,7 @@ class ContentController {
     }
 
     @PutMapping("/{id}")
-    fun update(@PathParam("id") id: Long,
+    fun update(@PathVariable("id") id: Long,
                @RequestBody content: ContentDTO): ResponseEntity<Unit> {
         contentService.update(id, ContentDTO.to(content));
         return ResponseEntity
@@ -35,12 +32,11 @@ class ContentController {
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathParam("id") id: Long) {
-        throw Exception("Teste");
-        return
-            ResponseEntity.ok(
-                ContentDTO.from(
-                    contentService.findById(id)));
+    fun findById(@PathVariable("id") id: Long): ResponseEntity<ContentDTO> {
+        val dto = ContentDTO.from(
+            contentService.findById(id)
+        );
+        return ResponseEntity.ok(dto);
     }
 
     private fun buildLinkTo(id: Long): URI {

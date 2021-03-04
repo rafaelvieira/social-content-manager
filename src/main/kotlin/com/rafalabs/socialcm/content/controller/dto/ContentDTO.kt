@@ -14,21 +14,21 @@ class ContentDTO: Serializable {
     companion object {
         fun from(domain: Content): ContentDTO {
 
-            val entity = ContentDTO();
-            entity.id           = domain.id;
-            entity.title        = domain.title;
-            entity.description  = domain.description;
-            entity.value        = domain.value;
+            val dto = ContentDTO();
+            dto.id           = domain.id;
+            dto.title        = domain.title;
+            dto.description  = domain.description;
+            dto.value        = domain.value;
 
-            return entity;
+            return dto;
         }
 
-        fun to(entity: ContentDTO): Content {
+        fun to(dto: ContentDTO): Content {
 
-            return Content.Builder(entity.title)
-                    .id(entity.id)
-                    .description(entity.description)
-                    .value(entity.value)
+            return Content.Builder(dto.title)
+                    .id(dto.id)
+                    .description(dto.description)
+                    .value(dto.value)
                     .build();
         }
     }

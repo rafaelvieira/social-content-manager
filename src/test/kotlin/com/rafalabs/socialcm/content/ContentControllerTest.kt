@@ -29,16 +29,8 @@ class ContentControllerTest {
     @Autowired
     private lateinit var restClient: TestRestTemplate;
 
-    @Autowired
-    private lateinit var repo: ContentRepository;
-
     @Test
     internal fun should_FindContent_When_IdExists() {
-        repo.save(ContentEntity.from(1, Content.Builder("Teste").build()))
-        val contents = repo.findAll();
-        for(c in contents) {
-            System.out.println(c.title)
-        }
 
         // Given
         val id = 1L;
@@ -47,7 +39,7 @@ class ContentControllerTest {
         val response: ResponseEntity<ContentDTO> =
             restClient
                 .getForEntity(
-                    """${baseUrl}:${port}${ContentController.BASE_URL}/${id}""",
+                    """${ContentController.BASE_URL}/${id}""",
                     ContentDTO::class
                 );
 

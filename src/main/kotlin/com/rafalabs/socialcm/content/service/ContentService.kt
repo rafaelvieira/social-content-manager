@@ -12,7 +12,13 @@ class ContentService {
     @Autowired
     private lateinit var contentRepository: ContentRepository;
 
-    fun save(content: Content): Content {
+    fun create(content: Content): Content {
+        val newContentEntity = contentRepository.save(ContentEntity.fromWithoutId(content));
+        return ContentEntity.to(newContentEntity);
+    }
+
+    fun update(content: Content): Content {
+        if(content.id == null) throw IllegalArgumentException("Content ID cannot be null");
         val newContentEntity = contentRepository.save(ContentEntity.from(content));
         return ContentEntity.to(newContentEntity);
     }
@@ -21,6 +27,6 @@ class ContentService {
         return ContentEntity.to(
                     contentRepository
                         .findById(id)
-                        .orElseThrow { Exception("""Content with ID $id not found. """) });
+                        .orElseThrow { Exception("""Content with ID $id not found.""") });
     }
 }

@@ -20,13 +20,20 @@ class ContentEntity {
     var value:          String = "";
 
     companion object {
-        fun from(domain: Content): ContentEntity {
+        fun fromWithoutId(domain: Content): ContentEntity {
 
             val entity = ContentEntity();
-            entity.id           = domain.id;
             entity.title        = domain.title;
             entity.description  = domain.description;
             entity.value        = domain.value;
+
+            return entity;
+        }
+
+        fun from(domain: Content): ContentEntity {
+
+            val entity = fromWithoutId(domain);
+            entity.id           = domain.id;
 
             return entity;
         }

@@ -45,7 +45,7 @@ class ContentServiceTest {
             .save(any());
 
         // When
-        val persistedContent = contentService.save(expectedContent);
+        val persistedContent = contentService.create(expectedContent);
 
         // Then
         assertEquals(1,                     persistedContent.id);
@@ -74,7 +74,7 @@ class ContentServiceTest {
             .save(any());
 
         // When
-        val persistedContent = contentService.save(expectedContent);
+        val persistedContent = contentService.create(expectedContent);
 
         // Then
         assertEquals(1,                    persistedContent.id);
@@ -86,10 +86,55 @@ class ContentServiceTest {
     @Test
     internal fun should_ThrowErrorCreatingContent_When_TitleIsBlank() {
 
-        assertThrows(IllegalArgumentException::class.java, {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
             Content.Builder("   ")
                 .build();
-        }, "Title cannot be blank");
+        };
+        assertEquals("Title cannot be blank", exception.message);
+    }
+
+    @Test
+    internal fun should_UpdateContent_When_Properties_Filled() {
+        // Given
+        val expectedContent =
+            Content.Builder("Learning Kotlin by using TDD 2")
+                .id(1)
+                .description("How to learn Kotlin through TDD process 2")
+                .value("Some big content 2")
+                .build();
+
+        val expectedContentEntity = ContentEntity();
+        expectedContentEntity.id = 1;
+        expectedContentEntity.title = expectedContent.title;
+        expectedContentEntity.description = expectedContent.description;
+        expectedContentEntity.value = expectedContent.value;
+
+        doReturn(expectedContentEntity)
+            .`when`(contentRepository)
+            .save(any());
+
+        // When
+        val persistedContent = contentService.update(expectedContent);
+
+        // Then
+        assertEquals(1,                     persistedContent.id);
+        assertEquals(expectedContent.title,         persistedContent.title);
+        assertEquals(expectedContent.description,   persistedContent.description);
+        assertEquals(expectedContent.value,         persistedContent.value);
+    }
+
+    @Test
+    internal fun should_ThrowErrorUpdatingContent_When_IdIsNull() {
+        // Given
+        val content =
+            Content.Builder("Anything")
+                .build();
+
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            // When
+            contentService.update(content);
+        };
+        assertEquals("Content ID cannot be null", exception.message);
     }
 
     @Test
@@ -116,8 +161,9 @@ class ContentServiceTest {
         val nonExistentId = 2L;
 
         // When... Then
-        assertThrows(Exception::class.java, {
-            val content = contentService.findById(nonExistentId);
-        }, "Content ID 2 not found");
+        val exception = assertThrows(Exception::class.java) {
+            contentService.findById(nonExistentId);
+        }
+        assertEquals("Content with ID 2 not found.", exception.message);
     }
 }

@@ -1,11 +1,13 @@
 package unit.com.rafalabs.socialcm.content.service
 
+import com.rafalabs.socialcm.content.controller.ContentController
 import com.rafalabs.socialcm.content.domain.Content
 import com.rafalabs.socialcm.content.repository.ContentRepository
 import com.rafalabs.socialcm.content.repository.entity.ContentEntity
 import com.rafalabs.socialcm.content.service.ContentService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
@@ -13,17 +15,27 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
+import java.lang.AssertionError
 import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension::class)
-class ContentServiceTest {
+class ContentControllerTest {
+
+    @InjectMocks
+    private lateinit var contentController: ContentController;
 
     @InjectMocks
     private lateinit var contentService: ContentService;
 
     @Mock
     private lateinit var contentRepository: ContentRepository;
+
+    @BeforeAll
+    internal fun setUp() {
+        contentService = ContentService();
+        contentController = ContentController(contentService);
+    }
 
     @Test
     internal fun should_CreateContent_When_Properties_Filled() {
@@ -45,7 +57,10 @@ class ContentServiceTest {
             .save(any());
 
         // When
-        val persistedContent = contentService.create(expectedContent);
+        val response = contentController.create(expectedContent);
+        val persistedContent =
+            if(response.body == null) throw AssertionError("Response body cannot be null")
+            else response.body!!;
 
         // Then
         assertEquals(1,                     persistedContent.id);
@@ -74,7 +89,10 @@ class ContentServiceTest {
             .save(any());
 
         // When
-        val persistedContent = contentService.create(expectedContent);
+        val response = contentController.create(expectedContent);
+        val persistedContent =
+            if(response.body == null) throw AssertionError("Response body cannot be null")
+            else response.body!!;
 
         // Then
         assertEquals(1,                    persistedContent.id);
@@ -114,7 +132,10 @@ class ContentServiceTest {
             .save(any());
 
         // When
-        val persistedContent = contentService.update(expectedContent);
+        val response = contentController.update(expectedContent);
+        val persistedContent =
+            if(response.body == null) throw AssertionError("Response body cannot be null")
+            else response.body!!;
 
         // Then
         assertEquals(1,                     persistedContent.id);
@@ -132,7 +153,7 @@ class ContentServiceTest {
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
             // When
-            contentService.update(content);
+            contentController.update(content);
         };
         assertEquals("Content ID cannot be null", exception.message);
     }
@@ -149,7 +170,10 @@ class ContentServiceTest {
             .findById(1);
 
         // When
-        val content = contentService.findById(1);
+        val response = contentController.findById(1);
+        val content =
+            if(response.body == null) throw AssertionError("Response body cannot be null")
+            else response.body!!;
 
         // Then
         assertEquals(expectedContentEntity.title, content.title);
@@ -162,7 +186,7 @@ class ContentServiceTest {
 
         // When... Then
         val exception = assertThrows(Exception::class.java) {
-            contentService.findById(nonExistentId);
+            contentController.findById(nonExistentId);
         }
         assertEquals("Content with ID 2 not found.", exception.message);
     }

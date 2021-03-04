@@ -19,7 +19,7 @@ import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension::class)
-class ContentControllerTest {
+class ContentServiceTest {
 
     @InjectMocks
     private lateinit var contentService: ContentService;

@@ -1,29 +1,21 @@
-package com.rafalabs.socialcm.content.repository.entity
+package com.rafalabs.socialcm.content.controller.dto
 
 import com.rafalabs.socialcm.content.domain.Content
+import java.io.Serializable
 import javax.persistence.*
 
-@Entity(name = "content")
-class ContentEntity {
+class ContentDTO: Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     var id:             Long? = null;
-
-    @Column(name = "title")
     var title:          String = "";
-
-    @Column(name = "description")
     var description:    String = "";
-
-    @Column(name = "value")
     var value:          String = "";
 
     companion object {
-        fun fromWithoutId(domain: Content): ContentEntity {
+        fun from(domain: Content): ContentDTO {
 
-            val entity = ContentEntity();
+            val entity = ContentDTO();
+            entity.id           = domain.id;
             entity.title        = domain.title;
             entity.description  = domain.description;
             entity.value        = domain.value;
@@ -31,15 +23,7 @@ class ContentEntity {
             return entity;
         }
 
-        fun from(id: Long, domain: Content): ContentEntity {
-
-            val entity = fromWithoutId(domain);
-            entity.id  = id;
-
-            return entity;
-        }
-
-        fun to(entity: ContentEntity): Content {
+        fun to(entity: ContentDTO): Content {
 
             return Content.Builder(entity.title)
                     .id(entity.id)

@@ -1,5 +1,6 @@
 package com.rafalabs.socialcm.content.controller
 
+import com.rafalabs.socialcm.content.controller.dto.ContentDTO
 import com.rafalabs.socialcm.content.domain.Content
 import com.rafalabs.socialcm.content.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,13 +17,9 @@ class ContentController {
     @Autowired
     private lateinit var contentService: ContentService;
 
-    constructor(contentService: ContentService) {
-        this.contentService = contentService;
-    }
-
     @PostMapping
-    fun create(@RequestBody content: Content): ResponseEntity<Unit> {
-        val persistedContent = contentService.create(content);
+    fun create(@RequestBody content: ContentDTO): ResponseEntity<Unit> {
+        val persistedContent = contentService.create(ContentDTO.to(content));
         return ResponseEntity
                 .created(buildLinkTo(persistedContent.id?:0L))
                 .build();
@@ -30,17 +27,19 @@ class ContentController {
 
     @PutMapping("/{id}")
     fun update(@PathParam("id") id: Long,
-               @RequestBody content: Content): ResponseEntity<Unit> {
-        contentService.update(id, content);
+               @RequestBody content: ContentDTO): ResponseEntity<Unit> {
+        contentService.update(id, ContentDTO.to(content));
         return ResponseEntity
                     .noContent()
                     .build();
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathParam("id") id: Long): ResponseEntity<Content> {
-        return ResponseEntity.ok(
-            contentService.findById(id));
+    fun findById(@PathParam("id") id: Long) {
+        return
+            ResponseEntity.ok(
+                ContentDTO.from(
+                    contentService.findById(id)));
     }
 
     private fun buildLinkTo(id: Long): URI {

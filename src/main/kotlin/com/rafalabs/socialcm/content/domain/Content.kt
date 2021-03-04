@@ -1,8 +1,7 @@
 package com.rafalabs.socialcm.content.domain
 
-import java.lang.IllegalArgumentException
-
 class Content {
+
     val id:             Long?;
     val title:          String;
     val description:    String;

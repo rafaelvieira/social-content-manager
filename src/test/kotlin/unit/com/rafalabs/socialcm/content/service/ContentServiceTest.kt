@@ -5,6 +5,7 @@ import com.rafalabs.socialcm.content.domain.Content
 import com.rafalabs.socialcm.content.repository.ContentRepository
 import com.rafalabs.socialcm.content.repository.entity.ContentEntity
 import com.rafalabs.socialcm.content.service.ContentService
+import com.rafalabs.socialcm.exception.BadRequestException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -88,7 +89,7 @@ class ContentServiceTest {
     @Test
     internal fun should_ThrowErrorCreatingContent_When_TitleIsBlank() {
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
+        val exception = assertThrows(BadRequestException::class.java) {
             Content.Builder("   ")
                 .build();
         };
@@ -149,7 +150,7 @@ class ContentServiceTest {
         val nonExistentId = 2L;
 
         // When... Then
-        val exception = assertThrows(Exception::class.java) {
+        val exception = assertThrows(BadRequestException::class.java) {
             contentService.findById(nonExistentId);
         }
         assertEquals("Content with ID 2 not found.", exception.message);

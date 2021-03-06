@@ -4,6 +4,7 @@ import com.rafalabs.socialcm.content.domain.Content
 import org.springframework.stereotype.Service
 import com.rafalabs.socialcm.content.repository.ContentRepository
 import com.rafalabs.socialcm.content.repository.entity.ContentEntity
+import com.rafalabs.socialcm.exception.BadRequestException
 import org.springframework.beans.factory.annotation.Autowired
 
 @Service
@@ -25,6 +26,6 @@ class ContentService {
         return ContentEntity.to(
                     contentRepository
                         .findById(id)
-                        .orElseThrow { Exception("""Content with ID $id not found.""") });
+                        .orElseThrow { BadRequestException("""Content with ID $id not found.""") });
     }
 }

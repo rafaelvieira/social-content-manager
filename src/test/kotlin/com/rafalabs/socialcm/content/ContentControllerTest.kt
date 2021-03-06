@@ -92,6 +92,25 @@ class ContentControllerTest {
     }
 
     @Test
+    internal fun should_ThrowErrorUpdatingContent_When_TitleIsBlank() {
+        // Given
+        val expectedContent = ContentDTO();
+        expectedContent.title       = "       ";
+
+        // When
+        val response =
+            restClient
+                .exchange<Unit>(
+                    RequestEntity
+                        .put("""${ContentController.BASE_URL}/2""")
+                        .body(expectedContent));
+
+        // Then
+        assertEquals(HttpStatus.BAD_REQUEST, response.statusCode);
+        assertEquals("Title cannot be blank", response.headers.get("error_message")?.get(0));
+    }
+
+    @Test
     internal fun should_FindContent_When_IdExists() {
 
         // Given

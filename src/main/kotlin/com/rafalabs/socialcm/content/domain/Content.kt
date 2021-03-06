@@ -1,5 +1,7 @@
 package com.rafalabs.socialcm.content.domain
 
+import com.rafalabs.socialcm.exception.BadRequestException
+
 class Content {
 
     val id:             Long?;
@@ -11,7 +13,7 @@ class Content {
         this.id = id;
         this.title =
             if(title.isBlank())
-                throw IllegalArgumentException("Title cannot be blank")
+                throw BadRequestException("Title cannot be blank")
             else title;
         this.description = description.trim();
         this.value = value.trim();
